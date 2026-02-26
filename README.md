@@ -9,22 +9,103 @@ To implement a logistic regression model to classify food items for diabetic pat
 2. Anaconda – Python 3.7 Installation / Jupyter notebook
 
 ## Algorithm
-1. 
-2. 
-3. 
-4. 
+1. **Data Collection and Preprocessing**
+   Load the food nutrition dataset, handle missing values, encode categorical labels, and normalize the nutritional features using scaling techniques.
+
+2. **Data Splitting**
+   Split the dataset into training and testing sets using an appropriate ratio (e.g., 80% training and 20% testing).
+
+3. **Model Training**
+   Train a Logistic Regression model using the training dataset to learn the relationship between nutritional features and diabetic suitability.
+
+4. **Model Evaluation and Prediction**
+   Test the model on the testing dataset and evaluate performance using accuracy, precision, recall, F1-score, and confusion matrix. Use the trained model to classify food items as suitable or unsuitable for diabetic patients.
+
 
 ## Program:
 ```
-/*
-Program to implement Logistic Regression for classifying food choices based on nutritional information.
-Developed by: 
-RegisterNumber:  
-*/
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.preprocessing import LabelEncoder, MinMaxScaler
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix, classification_report
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+#Load the dataset
+df=pd.read_csv('food_items (1).csv')
+#inspect the dataset
+print('Name:Mohamed Mubeen.A')
+print('Reg. No: 212225040241')
+print("Dataset Overview:")
+print(df.head())
+print("\nDataset Info:")
+print(df.info())
+X_raw = df.iloc[:,:-1]
+y_raw = df.iloc[:,-1:]
+scaler= MinMaxScaler()
+#Scaling the raw input features
+X= scaler.fit_transform(X_raw)
+#Create a LabelEncoder object
+label_encoder = LabelEncoder()
+#Encode the target variable
+y= label_encoder.fit_transform(y_raw.values.ravel())
+#Note the ravel() function flattens the vector
+
+
+#First, let's split the the training and testing dataset
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify =y, random_state=123)
+
+#L2 penalty to shrink coefficients without removing any features from the model
+penalty='l2'
+
+#Our classification problem is multinomial
+multi_class='multinomial'
+
+#Use of lbfgs for L2 penalty and multinomial classes
+solver= 'lbfgs'
+
+#Max iteration=1000
+max_iter=1000
+
+#Define a logistic regression model with the  above arguments
+l2_model = LogisticRegression(
+    random_state=123,
+    penalty=penalty,
+    multi_class=multi_class, 
+    solver=solver, 
+    max_iter=max_iter
+)
+l2_model.fit(X_train, y_train)
+
+y_pred= l2_model.predict(X_test)
+print('Name:Mohamed Mubeen.A')
+print('Reg. No: 212225040241')
+print("\nModel Evaluation:")
+print("Accuracy:",accuracy_score(y_test, y_pred))
+print("\nClassification Report:")
+print(classification_report(y_test, y_pred))
+
+#Confusion Matrix
+conf_matrix= confusion_matrix(y_test, y_pred)
+print(conf_matrix)
+print('Name:Mohamed Mubeen.A')
+print('Reg. No: 212225040241')
+
+
 ```
 
 ## Output:
-![simple linear regression model for predicting the marks scored](sam.png)
+<img width="733" height="524" alt="image" src="https://github.com/user-attachments/assets/56fa4d8d-0da5-42d8-b0fb-7a113cb3ac53" />
+
+<img width="544" height="558" alt="image" src="https://github.com/user-attachments/assets/e9b0b7a9-99a7-47cf-b6cc-1ec481c29cf5" />
+
+<img width="476" height="285" alt="image" src="https://github.com/user-attachments/assets/7a65ae0e-01ca-468c-9da4-90b6c06ec005" />
+
+
+
+
+
 
 
 ## Result:
